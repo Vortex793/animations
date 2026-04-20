@@ -12,9 +12,9 @@ namespace animations
         private SpriteBatch _spriteBatch;
 
         Texture2D tribbleBrownTexture, tribbleOrangeTexture, tribbleCreamTexture, tribbleGreyTexture;
-        Rectangle brownTribbleRect, brownCreamRect;
+        Rectangle tribbleBrownRect, tribbleCreamRect, tribbleGreyRect, tribbleOrangeRect;
         Rectangle window;
-        Vector2 brownTribbleSpeed;
+        Vector2 tribbleBrownSpeed, tribbleCreamSpeed, tribbleGreySpeed, tribbleOrangeSpeed;
         SoundEffect tribbleSound;
 
         public Game1()
@@ -33,8 +33,15 @@ namespace animations
             // TODO: Add your initialization logic here
 
             base.Initialize();
-            brownTribbleRect = new Rectangle(301, 10, 100, 100);
-            brownTribbleSpeed = new Vector2(2000, 0);
+            tribbleBrownRect = new Rectangle(500, 10, 100, 100);
+            tribbleCreamRect = new Rectangle(300, 200, 100, 100);
+            tribbleGreyRect = new Rectangle(200, 400, 100, 100);
+            tribbleOrangeRect = new Rectangle(400, 100, 100, 100);
+
+            tribbleBrownSpeed = new Vector2(2, 2);
+            tribbleCreamSpeed = new Vector2(2, 0);
+            tribbleGreySpeed = new Vector2(0, 2);
+            tribbleOrangeSpeed = new Vector2(2, 2);
         }
 
         protected override void LoadContent()
@@ -43,6 +50,10 @@ namespace animations
 
             // TODO: use this.Content to load your game content here
             tribbleBrownTexture = Content.Load<Texture2D>("tribbleBrown");
+            tribbleCreamTexture = Content.Load<Texture2D>("tribbleCream");
+            tribbleGreyTexture = Content.Load<Texture2D>("tribbleGrey");
+            tribbleOrangeTexture = Content.Load<Texture2D>("tribbleOrange");
+
             tribbleSound = Content.Load<SoundEffect>("tribble_coo");
         }
 
@@ -52,13 +63,62 @@ namespace animations
                 Exit();
 
             // TODO: Add your update logic here
-            brownTribbleRect.X += (int)brownTribbleSpeed.X;
-            if (brownTribbleRect.Right >= window.Width || brownTribbleRect.Left <= 0)
+
+            //Brown
+            tribbleBrownRect.X += (int)tribbleBrownSpeed.X;
+            if (tribbleBrownRect.Right >= window.Width || tribbleBrownRect.Left <= 0)
             {
-                brownTribbleSpeed.X *= -1;
+                tribbleBrownSpeed.X *= -1;
                 tribbleSound.Play();
             }
-            brownTribbleRect.Y += (int)brownTribbleSpeed.Y;
+            tribbleBrownRect.Y += (int)tribbleBrownSpeed.Y;
+            if (tribbleBrownRect.Bottom >= window.Height || tribbleBrownRect.Top <= 0)
+            {
+                tribbleBrownSpeed.Y *= -1;
+                tribbleSound.Play();
+            }
+
+            //Cream
+            tribbleCreamRect.X += (int)tribbleCreamSpeed.X;
+            if (tribbleCreamRect.Right >= window.Width || tribbleCreamRect.Left <= 0)
+            {
+                tribbleCreamSpeed.X *= -1;
+                tribbleSound.Play();
+            }
+            tribbleCreamRect.Y += (int)tribbleCreamSpeed.Y;
+            if (tribbleCreamRect.Bottom >= window.Height || tribbleCreamRect.Top <= 0)
+            {
+                tribbleCreamSpeed.Y *= -1;
+                tribbleSound.Play();
+            }
+
+            //Grey
+            tribbleGreyRect.X += (int)tribbleGreySpeed.X;
+            if (tribbleGreyRect.Right >= window.Width || tribbleGreyRect.Left <= 0)
+            {
+                tribbleGreySpeed.X *= -1;
+                tribbleSound.Play();
+            }
+            tribbleGreyRect.Y += (int)tribbleGreySpeed.Y;
+            if (tribbleGreyRect.Bottom >= window.Height || tribbleGreyRect.Top <= 0)
+            {
+                tribbleGreySpeed.Y *= -1;
+                tribbleSound.Play();
+            }
+
+            //Orange
+            tribbleOrangeRect.X += (int)tribbleOrangeSpeed.X;
+            if (tribbleOrangeRect.Right >= window.Width || tribbleOrangeRect.Left <= 0)
+            {
+                tribbleOrangeSpeed.X *= -1;
+                tribbleSound.Play();
+            }
+            tribbleOrangeRect.Y += (int)tribbleOrangeSpeed.Y;
+            if (tribbleOrangeRect.Bottom >= window.Height || tribbleOrangeRect.Top <= 0)
+            {
+                tribbleOrangeSpeed.Y *= -1;
+                tribbleSound.Play();
+            }
             base.Update(gameTime);
         }
 
@@ -68,7 +128,10 @@ namespace animations
 
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
-            _spriteBatch.Draw(tribbleBrownTexture, brownTribbleRect, Color.White);
+            _spriteBatch.Draw(tribbleBrownTexture, tribbleBrownRect, Color.White);
+            _spriteBatch.Draw(tribbleCreamTexture, tribbleCreamRect, Color.White);
+            _spriteBatch.Draw(tribbleGreyTexture, tribbleGreyRect, Color.White);
+            _spriteBatch.Draw(tribbleOrangeTexture, tribbleOrangeRect, Color.White);
             _spriteBatch.End();
             base.Draw(gameTime);
         }
