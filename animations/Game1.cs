@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
@@ -10,10 +11,16 @@ namespace animations
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        
+        Random randNum = new Random();
 
         Texture2D tribbleBrownTexture, tribbleOrangeTexture, tribbleCreamTexture, tribbleGreyTexture;
         Rectangle tribbleBrownRect, tribbleCreamRect, tribbleGreyRect, tribbleOrangeRect;
         Rectangle window;
+        
+        Rectangle enterpriceBackgroundRect;
+        Texture2D enterpriseTexture;
+
         Vector2 tribbleBrownSpeed, tribbleCreamSpeed, tribbleGreySpeed, tribbleOrangeSpeed;
         SoundEffect tribbleSound;
 
@@ -33,15 +40,24 @@ namespace animations
             // TODO: Add your initialization logic here
 
             base.Initialize();
-            tribbleBrownRect = new Rectangle(500, 10, 100, 100);
-            tribbleCreamRect = new Rectangle(300, 200, 100, 100);
-            tribbleGreyRect = new Rectangle(200, 400, 100, 100);
-            tribbleOrangeRect = new Rectangle(400, 100, 100, 100);
+            //Tribble Rectangles
+            //tribbleBrownRect = new Rectangle(500, 10, 100, 100);
+            //tribbleCreamRect = new Rectangle(300, 200, 100, 100);
+            //tribbleGreyRect = new Rectangle(200, 400, 100, 100);
+            //tribbleOrangeRect = new Rectangle(400, 100, 100, 100);
+            tribbleBrownRect = new Rectangle(randNum.Next(0, 700), randNum.Next(0, 500), 100, 100);
+            tribbleCreamRect = new Rectangle(randNum.Next(0, 700), randNum.Next(0, 500), 100, 100);
+            tribbleGreyRect = new Rectangle(randNum.Next(0, 700), randNum.Next(0, 500), 100, 100);
+            tribbleOrangeRect = new Rectangle(randNum.Next(0, 700), randNum.Next(0, 500), 100, 100);
 
+            //Tribble Speed
             tribbleBrownSpeed = new Vector2(2, 2);
             tribbleCreamSpeed = new Vector2(2, 0);
             tribbleGreySpeed = new Vector2(0, 2);
-            tribbleOrangeSpeed = new Vector2(2, 2);
+            tribbleOrangeSpeed = new Vector2(3, 1);
+
+            //Background
+            enterpriceBackgroundRect = new Rectangle(0, 0, 800, 600);
         }
 
         protected override void LoadContent()
@@ -55,6 +71,8 @@ namespace animations
             tribbleOrangeTexture = Content.Load<Texture2D>("tribbleOrange");
 
             tribbleSound = Content.Load<SoundEffect>("tribble_coo");
+
+            enterpriseTexture = Content.Load<Texture2D>("enterprise_inside");
         }
 
         protected override void Update(GameTime gameTime)
@@ -128,6 +146,7 @@ namespace animations
 
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
+            _spriteBatch.Draw(enterpriseTexture, enterpriceBackgroundRect, Color.White);
             _spriteBatch.Draw(tribbleBrownTexture, tribbleBrownRect, Color.White);
             _spriteBatch.Draw(tribbleCreamTexture, tribbleCreamRect, Color.White);
             _spriteBatch.Draw(tribbleGreyTexture, tribbleGreyRect, Color.White);
