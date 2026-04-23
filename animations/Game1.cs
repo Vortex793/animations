@@ -9,6 +9,8 @@ namespace animations
 {
     public class Game1 : Game
     {
+        //Curtis Apfelbeck
+        //Tribble Animations
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         
@@ -16,12 +18,14 @@ namespace animations
 
         Texture2D tribbleBrownTexture, tribbleOrangeTexture, tribbleCreamTexture, tribbleGreyTexture;
         Rectangle tribbleBrownRect, tribbleCreamRect, tribbleGreyRect, tribbleOrangeRect;
+        
         Rectangle window;
         
         Rectangle enterpriceBackgroundRect;
         Texture2D enterpriseTexture;
 
         Vector2 tribbleBrownSpeed, tribbleCreamSpeed, tribbleGreySpeed, tribbleOrangeSpeed;
+        
         SoundEffect tribbleSound;
 
         public Game1()
@@ -41,10 +45,6 @@ namespace animations
 
             base.Initialize();
             //Tribble Rectangles
-            //tribbleBrownRect = new Rectangle(500, 10, 100, 100);
-            //tribbleCreamRect = new Rectangle(300, 200, 100, 100);
-            //tribbleGreyRect = new Rectangle(200, 400, 100, 100);
-            //tribbleOrangeRect = new Rectangle(400, 100, 100, 100);
             tribbleBrownRect = new Rectangle(randNum.Next(0, 700), randNum.Next(0, 500), 100, 100);
             tribbleCreamRect = new Rectangle(randNum.Next(0, 700), randNum.Next(0, 500), 100, 100);
             tribbleGreyRect = new Rectangle(randNum.Next(0, 700), randNum.Next(0, 500), 100, 100);
@@ -89,6 +89,7 @@ namespace animations
                 tribbleBrownSpeed.X *= -1;
                 tribbleSound.Play();
             }
+
             tribbleBrownRect.Y += (int)tribbleBrownSpeed.Y;
             if (tribbleBrownRect.Bottom >= window.Height || tribbleBrownRect.Top <= 0)
             {
@@ -103,6 +104,7 @@ namespace animations
                 tribbleCreamSpeed.X *= -1;
                 tribbleSound.Play();
             }
+
             tribbleCreamRect.Y += (int)tribbleCreamSpeed.Y;
             if (tribbleCreamRect.Bottom >= window.Height || tribbleCreamRect.Top <= 0)
             {
@@ -117,6 +119,7 @@ namespace animations
                 tribbleGreySpeed.X *= -1;
                 tribbleSound.Play();
             }
+
             tribbleGreyRect.Y += (int)tribbleGreySpeed.Y;
             if (tribbleGreyRect.Bottom >= window.Height || tribbleGreyRect.Top <= 0)
             {
@@ -126,15 +129,26 @@ namespace animations
 
             //Orange
             tribbleOrangeRect.X += (int)tribbleOrangeSpeed.X;
-            if (tribbleOrangeRect.Right >= window.Width || tribbleOrangeRect.Left <= 0)
+            if (tribbleOrangeRect.Right < 0)
             {
-                tribbleOrangeSpeed.X *= -1;
+                tribbleOrangeRect.X = window.Width;
                 tribbleSound.Play();
             }
-            tribbleOrangeRect.Y += (int)tribbleOrangeSpeed.Y;
-            if (tribbleOrangeRect.Bottom >= window.Height || tribbleOrangeRect.Top <= 0)
+            else if (tribbleOrangeRect.Left > window.Width)
             {
-                tribbleOrangeSpeed.Y *= -1;
+                tribbleOrangeRect.X = -tribbleOrangeRect.Width;
+                tribbleSound.Play();
+            }
+
+            tribbleOrangeRect.Y += (int)tribbleOrangeSpeed.Y;
+            if (tribbleOrangeRect.Bottom < 0)
+            {
+                tribbleOrangeRect.Y = window.Height;
+                tribbleSound.Play();
+            }
+            else if (tribbleOrangeRect.Top > window.Height)
+            {
+                tribbleOrangeRect.Y = -tribbleOrangeRect.Height;
                 tribbleSound.Play();
             }
             base.Update(gameTime);
@@ -146,11 +160,11 @@ namespace animations
 
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
-            _spriteBatch.Draw(enterpriseTexture, enterpriceBackgroundRect, Color.White);
-            _spriteBatch.Draw(tribbleBrownTexture, tribbleBrownRect, Color.White);
-            _spriteBatch.Draw(tribbleCreamTexture, tribbleCreamRect, Color.White);
-            _spriteBatch.Draw(tribbleGreyTexture, tribbleGreyRect, Color.White);
-            _spriteBatch.Draw(tribbleOrangeTexture, tribbleOrangeRect, Color.White);
+            _spriteBatch.Draw(enterpriseTexture, enterpriceBackgroundRect, Color.White);    //Background
+            _spriteBatch.Draw(tribbleBrownTexture, tribbleBrownRect, Color.White);          //Brown
+            _spriteBatch.Draw(tribbleCreamTexture, tribbleCreamRect, Color.White);          //Cream
+            _spriteBatch.Draw(tribbleGreyTexture, tribbleGreyRect, Color.White);            //Grey
+            _spriteBatch.Draw(tribbleOrangeTexture, tribbleOrangeRect, Color.White);        //Orange
             _spriteBatch.End();
             base.Draw(gameTime);
         }
