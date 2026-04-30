@@ -7,6 +7,12 @@ using Microsoft.Xna.Framework.Input;
 
 namespace animations
 {
+    enum Screen
+    {
+        Intro,
+        TribbleYard,
+        End
+    }
     public class Game1 : Game
     {
         //Curtis Apfelbeck
@@ -16,6 +22,7 @@ namespace animations
         
         Random randNum = new Random();
 
+        
         Texture2D tribbleBrownTexture, tribbleOrangeTexture, tribbleCreamTexture, tribbleGreyTexture;
         Rectangle tribbleBrownRect, tribbleCreamRect, tribbleGreyRect, tribbleOrangeRect;
         
@@ -27,6 +34,10 @@ namespace animations
         Vector2 tribbleBrownSpeed, tribbleCreamSpeed, tribbleGreySpeed, tribbleOrangeSpeed;
         
         SoundEffect tribbleSound;
+
+        Texture2D introTexture, endTexture;
+        MouseState mouseState;
+        Screen screen;
 
         public Game1()
         {
@@ -58,6 +69,8 @@ namespace animations
 
             //Background
             enterpriceBackgroundRect = new Rectangle(0, 0, 800, 600);
+
+            screen = Screen.Intro;
         }
 
         protected override void LoadContent()
@@ -73,84 +86,100 @@ namespace animations
             tribbleSound = Content.Load<SoundEffect>("tribble_coo");
 
             enterpriseTexture = Content.Load<Texture2D>("enterprise_inside");
+            introTexture = Content.Load<Texture2D>("tribble_intro");
         }
 
         protected override void Update(GameTime gameTime)
         {
+            mouseState = Mouse.GetState();
+
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
             // TODO: Add your update logic here
+            
+            //Intro
+            if (screen == Screen.Intro)
+            {
+                if(mouseState.LeftButton == ButtonState.Pressed)
+                {
+                    screen = Screen.TribbleYard;
+                }
+            }
+            else if (screen == Screen.TribbleYard)
+            {
+                //Brown
+                tribbleBrownRect.X += (int)tribbleBrownSpeed.X;
+                if (tribbleBrownRect.Right >= window.Width || tribbleBrownRect.Left <= 0)
+                {
+                    tribbleBrownSpeed.X *= -1;
+                    tribbleSound.Play();
+                }
 
-            //Brown
-            tribbleBrownRect.X += (int)tribbleBrownSpeed.X;
-            if (tribbleBrownRect.Right >= window.Width || tribbleBrownRect.Left <= 0)
-            {
-                tribbleBrownSpeed.X *= -1;
-                tribbleSound.Play();
-            }
+                tribbleBrownRect.Y += (int)tribbleBrownSpeed.Y;
+                if (tribbleBrownRect.Bottom >= window.Height || tribbleBrownRect.Top <= 0)
+                {
+                    tribbleBrownSpeed.Y *= -1;
+                    tribbleSound.Play();
+                }
 
-            tribbleBrownRect.Y += (int)tribbleBrownSpeed.Y;
-            if (tribbleBrownRect.Bottom >= window.Height || tribbleBrownRect.Top <= 0)
-            {
-                tribbleBrownSpeed.Y *= -1;
-                tribbleSound.Play();
-            }
+                //Cream
+                tribbleCreamRect.X += (int)tribbleCreamSpeed.X;
+                if (tribbleCreamRect.Right >= window.Width || tribbleCreamRect.Left <= 0)
+                {
+                    tribbleCreamSpeed.X *= -1;
+                    tribbleSound.Play();
+                }
 
-            //Cream
-            tribbleCreamRect.X += (int)tribbleCreamSpeed.X;
-            if (tribbleCreamRect.Right >= window.Width || tribbleCreamRect.Left <= 0)
-            {
-                tribbleCreamSpeed.X *= -1;
-                tribbleSound.Play();
-            }
+                tribbleCreamRect.Y += (int)tribbleCreamSpeed.Y;
+                if (tribbleCreamRect.Bottom >= window.Height || tribbleCreamRect.Top <= 0)
+                {
+                    tribbleCreamSpeed.Y *= -1;
+                    tribbleSound.Play();
+                }
 
-            tribbleCreamRect.Y += (int)tribbleCreamSpeed.Y;
-            if (tribbleCreamRect.Bottom >= window.Height || tribbleCreamRect.Top <= 0)
-            {
-                tribbleCreamSpeed.Y *= -1;
-                tribbleSound.Play();
-            }
+                //Grey
+                tribbleGreyRect.X += (int)tribbleGreySpeed.X;
+                if (tribbleGreyRect.Right >= window.Width || tribbleGreyRect.Left <= 0)
+                {
+                    tribbleGreySpeed.X *= -1;
+                    tribbleSound.Play();
+                }
 
-            //Grey
-            tribbleGreyRect.X += (int)tribbleGreySpeed.X;
-            if (tribbleGreyRect.Right >= window.Width || tribbleGreyRect.Left <= 0)
-            {
-                tribbleGreySpeed.X *= -1;
-                tribbleSound.Play();
-            }
+                tribbleGreyRect.Y += (int)tribbleGreySpeed.Y;
+                if (tribbleGreyRect.Bottom >= window.Height || tribbleGreyRect.Top <= 0)
+                {
+                    tribbleGreySpeed.Y *= -1;
+                    tribbleSound.Play();
+                }
 
-            tribbleGreyRect.Y += (int)tribbleGreySpeed.Y;
-            if (tribbleGreyRect.Bottom >= window.Height || tribbleGreyRect.Top <= 0)
-            {
-                tribbleGreySpeed.Y *= -1;
-                tribbleSound.Play();
-            }
+                //Orange
+                tribbleOrangeRect.X += (int)tribbleOrangeSpeed.X;
+                if (tribbleOrangeRect.Right < 0)
+                {
+                    tribbleOrangeRect.X = window.Width;
+                    tribbleSound.Play();
+                }
+                else if (tribbleOrangeRect.Left > window.Width)
+                {
+                    tribbleOrangeRect.X = -tribbleOrangeRect.Width;
+                    tribbleSound.Play();
+                }
 
-            //Orange
-            tribbleOrangeRect.X += (int)tribbleOrangeSpeed.X;
-            if (tribbleOrangeRect.Right < 0)
-            {
-                tribbleOrangeRect.X = window.Width;
-                tribbleSound.Play();
+                tribbleOrangeRect.Y += (int)tribbleOrangeSpeed.Y;
+                if (tribbleOrangeRect.Bottom < 0)
+                {
+                    tribbleOrangeRect.Y = window.Height;
+                    tribbleSound.Play();
+                }
+                else if (tribbleOrangeRect.Top > window.Height)
+                {
+                    tribbleOrangeRect.Y = -tribbleOrangeRect.Height;
+                    tribbleSound.Play();
+                }
             }
-            else if (tribbleOrangeRect.Left > window.Width)
-            {
-                tribbleOrangeRect.X = -tribbleOrangeRect.Width;
-                tribbleSound.Play();
-            }
-
-            tribbleOrangeRect.Y += (int)tribbleOrangeSpeed.Y;
-            if (tribbleOrangeRect.Bottom < 0)
-            {
-                tribbleOrangeRect.Y = window.Height;
-                tribbleSound.Play();
-            }
-            else if (tribbleOrangeRect.Top > window.Height)
-            {
-                tribbleOrangeRect.Y = -tribbleOrangeRect.Height;
-                tribbleSound.Play();
-            }
+           
             base.Update(gameTime);
         }
 
@@ -160,11 +189,20 @@ namespace animations
 
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
-            _spriteBatch.Draw(enterpriseTexture, enterpriceBackgroundRect, Color.White);    //Background
-            _spriteBatch.Draw(tribbleBrownTexture, tribbleBrownRect, Color.White);          //Brown
-            _spriteBatch.Draw(tribbleCreamTexture, tribbleCreamRect, Color.White);          //Cream
-            _spriteBatch.Draw(tribbleGreyTexture, tribbleGreyRect, Color.White);            //Grey
-            _spriteBatch.Draw(tribbleOrangeTexture, tribbleOrangeRect, Color.White);        //Orange
+
+            if(screen == Screen.Intro)
+            {
+                _spriteBatch.Draw(introTexture, window, Color.White);
+            }
+            else if (screen == Screen.TribbleYard)
+            {
+                _spriteBatch.Draw(enterpriseTexture, enterpriceBackgroundRect, Color.White);    //Background
+                _spriteBatch.Draw(tribbleBrownTexture, tribbleBrownRect, Color.White);          //Brown
+                _spriteBatch.Draw(tribbleCreamTexture, tribbleCreamRect, Color.White);          //Cream
+                _spriteBatch.Draw(tribbleGreyTexture, tribbleGreyRect, Color.White);            //Grey
+                _spriteBatch.Draw(tribbleOrangeTexture, tribbleOrangeRect, Color.White);        //Orange
+            }
+            
             _spriteBatch.End();
             base.Draw(gameTime);
         }
