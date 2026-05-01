@@ -37,6 +37,7 @@ namespace animations
 
         Texture2D introTexture, endTexture;
         MouseState mouseState;
+        MouseState prevMouseState;
         Screen screen;
 
         public Game1()
@@ -71,6 +72,7 @@ namespace animations
             enterpriceBackgroundRect = new Rectangle(0, 0, 800, 600);
 
             screen = Screen.Intro;
+
         }
 
         protected override void LoadContent()
@@ -87,10 +89,12 @@ namespace animations
 
             enterpriseTexture = Content.Load<Texture2D>("enterprise_inside");
             introTexture = Content.Load<Texture2D>("tribble_intro");
+            endTexture = Content.Load<Texture2D>("end_screen");
         }
 
         protected override void Update(GameTime gameTime)
         {
+            prevMouseState = mouseState;
             mouseState = Mouse.GetState();
 
 
@@ -178,6 +182,12 @@ namespace animations
                     tribbleOrangeRect.Y = -tribbleOrangeRect.Height;
                     tribbleSound.Play();
                 }
+
+                //End Screen
+                if (mouseState.LeftButton == ButtonState.Pressed && prevMouseState.LeftButton == ButtonState.Released)
+                {
+                    screen = Screen.End;
+                }
             }
            
             base.Update(gameTime);
@@ -202,8 +212,11 @@ namespace animations
                 _spriteBatch.Draw(tribbleGreyTexture, tribbleGreyRect, Color.White);            //Grey
                 _spriteBatch.Draw(tribbleOrangeTexture, tribbleOrangeRect, Color.White);        //Orange
             }
-            
-            _spriteBatch.End();
+            else if (screen == Screen.End)
+            {
+                _spriteBatch.Draw(endTexture, window, Color.White);
+            } 
+                _spriteBatch.End();
             base.Draw(gameTime);
         }
     }
